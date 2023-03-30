@@ -1,31 +1,31 @@
+use rand::Rng;
 use std::io;
 
 fn main() {
+    // Generate a random number between 1 and 100
+    let secret_number = rand::thread_rng().gen_range(1, 101);
+
+    println!("Guess the number between 1 and 100!");
+
     loop {
-        // Ask the user which conversion they want to perform
-        println!("Select a conversion:");
-        println!("1. Celsius to Fahrenheit");
-        println!("2. Fahrenheit to Celsius");
-        let mut choice = String::new();
-        io::stdin().read_line(&mut choice).expect("Failed to read line");
-        let choice = choice.trim().parse::<i32>().unwrap();
+        // Get a guess from the user
+        let mut guess = String::new();
+        io::stdin().read_line(&mut guess).expect("Failed to read line");
 
-        // Ask the user for the temperature to convert
-        println!("Enter the temperature:");
-        let mut temperature = String::new();
-        io::stdin().read_line(&mut temperature).expect("Failed to read line");
-        let temperature = temperature.trim().parse::<f64>().unwrap();
-
-        // Perform the conversion
-        let converted_temperature = match choice {
-            1 => temperature * 1.8 + 32.0,
-            2 => (temperature - 32.0) / 1.8,
-            _ => continue,
+        // Parse the guess as an integer
+        let guess: u32 = match guess.trim().parse() {
+            Ok(num) => num,
+            Err(_) => continue,
         };
 
-        // Display the result
-        let from_unit = if choice == 1 { "C" } else { "F" };
-        let to_unit = if choice == 1 { "F" } else { "C" };
-        println!("{}{} = {}{}", temperature, from_unit, converted_temperature, to_unit);
+        // Check if the guess is correct
+        match guess.cmp(&secret_number) {
+            std::cmp::Ordering::Less => println!("Too small!"),
+            std::cmp::Ordering::Greater => println!("Too big!"),
+            std::cmp::Ordering::Equal => {
+                println!("You win!");
+                break;
+            }
+        }
     }
 }
