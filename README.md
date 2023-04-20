@@ -1,5 +1,6 @@
-# rust-new-project-template
-A good starting point for a new Rust project
+# Reverse String
+
+This is a simple Rust project that takes an input string from the user, reverses it, and outputs the reversed string to the console.
 
 ## References
 
